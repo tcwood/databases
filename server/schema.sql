@@ -26,7 +26,7 @@ CREATE TABLE `messages` (
 CREATE TABLE `rooms` (
   `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
   `roomname` VARCHAR(100) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
   UNIQUE KEY (`roomname`)
 );
 

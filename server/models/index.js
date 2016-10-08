@@ -9,62 +9,76 @@ var headers = {
   'Content-Type': 'text/html'
 };
 
-
 module.exports = {
   messages: {
     get: function (res) {
-      db.query('SELECT messages FROM messages', [], function(err, rows) {
-        if (err) {
-          console.log(err);
-          console.log('this error specifically');
-        } else {
-          res.writeHead(200, headers);
-          res.end(JSON.stringify(rows));
-          // console.log(rows);
-        }
+      db.queryGet('SELECT messages FROM messages', function(rows) {
+        res.writeHead(200, headers);
+        res.end(JSON.stringify(rows));
       });
+    },
 
-    }, // a function which produces all the messages
-    post: function (message) {
-      var messageBody = {
-        messages: message.message
+    post: function (message, res) {
+      var messageBody = {                     //use this for POST request
+        messages: message.message,
+        id_users: '',
+        id_rooms: ''
       };
+      console.log(message);
+      var roomName = {roomname: message.roomname};        //Use these for querying ids
+      var userName = {username: message.username};
 
-      var roomBody = {
-        roomname: message.roomname
-      };
+      db.queryPost('INSERT IGNORE INTO users SET ?', userName, function() {
+        db.queryGet('SELECT id FROM users WHERE username ="' + message.username + '"', function(rows) {
+          messageBody.id_users = rows[0].id;
 
-      db.query('INSERT INTO rooms SET ?', roomBody, function(err, results) {
-        if (err) { console.log(err); }
-        console.log('we out here');
+          db.queryPost('INSERT IGNORE INTO rooms SET ?', roomName, function() {
+            db.queryGet('SELECT id FROM rooms WHERE roomname ="' + message.roomname + '"', function(rows) {
+              messageBody.id_rooms = rows[0].id;
+
+              db.queryPost('INSERT INTO messages SET ?', messageBody, function() {
+                res.end();
+              });
+            });
+          });
+        });
       });
-
-      db.query('INSERT INTO messages SET ?', messageBody, function(err, results) {
-        if (err) { console.log(err); }
-        console.log(results);
-        console.log('message post successful!');
-      });   
-    } // a function which can be used to insert a message into the database
+    }
   },
 
   users: {
-    // Ditto as above.
-    get: function () {},
-    post: function (userName) {
-      console.log(userName);
-      db.query('INSERT INTO users SET ?', userName, function(err, results) {
-        if (err) { console.log(err); }
-        console.log('successful!');
+    get: function (res) {
+      db.queryGet('SELECT username FROM users', function(rows) {
+        res.writeHead(200, headers);
+        res.end(JSON.stringify(rows));
+      });
+    },
+    post: function (userName, res) {
+      var userBody = {
+        username: userName.username
+      };
+      db.queryPost('INSERT IGNORE INTO users SET ?', userBody, function() {
+        res.end();
+      });
+    }
+  },
+
+  rooms: {
+    get: function(res) {
+      db.queryGet('SELECT roomname FROM rooms', function(rows) {
+        res.writeHead(200, headers);
+        res.end(JSON.stringify(rows));
+      });
+    },
+
+    post: function(room, res) {
+      var roomBody = {
+        roomname: room.roomname
+      };
+
+      db.queryPost('INSERT IGNORE INTO rooms SET ?', roomBody, function() {
+        res.end();
       });
     }
   }
 };
-
-// db.query('INSERT INTO messages SET ?', post, function(err, result) {
-//       if (err) throw err;
-//     });
-
-// INSERT INTO `users` (`username`,`id`) VALUES
-// ('','');
-// INSERT INTO `messages` (`id`,`messages`,`id_users`,`id_rooms`) VALUES
-// ('','','','','');

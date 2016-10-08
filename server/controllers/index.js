@@ -1,29 +1,32 @@
 var models = require('../models');
 
 module.exports = {
-  messages: {
+  messages: {     // a function which handles a get request for all messages
     get: function (req, res) {
-      console.log('controller messages req body');
-
       models.messages.get(res);
-
-    }, // a function which handles a get request for all messages
-    post: function (req, res) {
-      // console.log('controller message post', req.body);
-
-      models.messages.post(req.body);
-      res.end();
-    } // a function which handles posting a message to the database
+    }, 
+    post: function (req, res) {  // a function which handles posting a message to the database
+      console.log('i hereeeee');
+      models.messages.post(req.body, res);
+    } 
   },
 
   users: {
     // Ditto as above
-    get: function (req, res) {},
+    get: function (req, res) {
+      models.users.get(res);
+    },
     post: function (req, res) {
-      // console.log('controller user post', req.body);
+      models.users.post(req.body, res);
+    }
+  },
 
-      models.users.post(req.body);
-      res.end();
+  rooms: {
+    get: function (req, res) {
+      models.rooms.get(res);
+    },
+    post: function (req, res) {
+      models.rooms.post(req.body, res);
     }
   }
 };
