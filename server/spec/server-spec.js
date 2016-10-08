@@ -55,9 +55,9 @@ describe('Persistent Node Chat Server', function() {
         dbConnection.query(queryString, queryArgs, function(err, results) {
           // Should have one result:
           expect(results.length).to.equal(1);
-
+          console.log(results);
           // TODO: If you don't have a column named text, change this test.
-          expect(results[0].text).to.equal('In mercy\'s name, three days is all I need.');
+          expect(results[0].messages).to.equal('In mercy\'s name, three days is all I need.');
 
           done();
         });

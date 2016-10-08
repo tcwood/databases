@@ -2,43 +2,42 @@ CREATE DATABASE chat;
 
 USE chat;
 
--- DROP TABLE IF EXISTS `Users`;
+-- DROP TABLE IF EXISTS `users`;
     
-CREATE TABLE `Users` (
+CREATE TABLE `users` (
   `username` VARCHAR(100) NULL DEFAULT NULL,
   `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 
--- DROP TABLE IF EXISTS `Messages`;
+-- DROP TABLE IF EXISTS `messages`;
     
-CREATE TABLE `Messages` (
+CREATE TABLE `messages` (
   `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `created-at` DATETIME(6) NULL DEFAULT NULL,
   `messages` VARCHAR(500) NULL DEFAULT NULL,
-  `id_Users` INTEGER NULL DEFAULT NULL,
-  `id_Room` INTEGER NULL DEFAULT NULL,
+  `id_users` INTEGER NULL DEFAULT NULL,
+  `id_rooms` INTEGER NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 
--- DROP TABLE IF EXISTS `Room`;
+-- DROP TABLE IF EXISTS `rooms`;
     
-CREATE TABLE `Room` (
+CREATE TABLE `rooms` (
   `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
   `roomname` VARCHAR(100) NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 
-ALTER TABLE `Messages` ADD FOREIGN KEY (id_Users) REFERENCES `Users` (`id`);
-ALTER TABLE `Messages` ADD FOREIGN KEY (id_Room) REFERENCES `Room` (`id`);
+ALTER TABLE `messages` ADD FOREIGN KEY (id_users) REFERENCES `users` (`id`);
+ALTER TABLE `messages` ADD FOREIGN KEY (id_rooms) REFERENCES `rooms` (`id`);
 
 -- ---
 -- Test Data
 -- ---
 
--- INSERT INTO `Users` (`username`,`id`) VALUES
+-- INSERT INTO `users` (`username`,`id`) VALUES
 -- ('','');
--- INSERT INTO `Messages` (`id`,`created-at`,`messages`,`id_Users`,`id_Room`) VALUES
+-- INSERT INTO `Messages` (`id`,`created_at`,`messages`,`id_users`,`id_rooms`) VALUES
 -- ('','','','','');
--- INSERT INTO `Room` (`id`,`roomname`) VALUES
+-- INSERT INTO `room` (`id`,`roomname`) VALUES
 -- ('','');
