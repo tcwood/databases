@@ -2,7 +2,12 @@ var models = require('../models');
 
 module.exports = {
   messages: {
-    get: function (req, res) {}, // a function which handles a get request for all messages
+    get: function (req, res) {
+      console.log('controller messages req body');
+
+      models.messages.get(res);
+
+    }, // a function which handles a get request for all messages
     post: function (req, res) {
       // console.log('controller message post', req.body);
 

@@ -7,7 +7,8 @@ USE chat;
 CREATE TABLE `users` (
   `username` VARCHAR(100) NULL DEFAULT NULL,
   `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY (`username`)
 );
 
 -- DROP TABLE IF EXISTS `messages`;
@@ -26,6 +27,7 @@ CREATE TABLE `rooms` (
   `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
   `roomname` VARCHAR(100) NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
+  UNIQUE KEY (`roomname`)
 );
 
 ALTER TABLE `messages` ADD FOREIGN KEY (id_users) REFERENCES `users` (`id`);
