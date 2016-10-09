@@ -32,7 +32,6 @@ CREATE TABLE `rooms` (
 
 ALTER TABLE `messages` ADD FOREIGN KEY (id_users) REFERENCES `users` (`id`);
 ALTER TABLE `messages` ADD FOREIGN KEY (id_rooms) REFERENCES `rooms` (`id`);
-
 -- ---
 -- Test Data
 -- ---

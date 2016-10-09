@@ -9,12 +9,23 @@ var headers = {
   'Content-Type': 'text/html'
 };
 
+// SELECT u.username, m.messages, r.roomname FROM messages m INNER JOIN users u ON (m.id_users = u.id) INNER JOIN rooms r ON (m.id_rooms = r.id);
+
+
+
 module.exports = {
   messages: {
     get: function (res) {
-      db.queryGet('SELECT messages FROM messages', function(rows) {
+      var joinQuery = 'SELECT u.username, m.messages, r.roomname, m.id FROM messages m INNER JOIN users u ON (m.id_users = u.id) INNER JOIN rooms r ON (m.id_rooms = r.id)'
+
+
+
+      // db.queryGet('SELECT messages FROM messages', function(rows) {
+      db.queryGet(joinQuery, function(rows) {  
         res.writeHead(200, headers);
-        res.end(JSON.stringify(rows));
+        console.log('rows from message model', rows);
+        console.log(JSON.stringify(rows));
+        res.end(JSON.stringify({results: rows}));
       });
     },
 
